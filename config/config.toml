@@ -1,0 +1,48 @@
+[vae]
+batch_size = 128
+gamma = 1e-5
+gamma_step = 200
+n_clusters = 3
+type_ = "CNN"
+epochs = 100
+patience = 15
+latent_dims = 32
+channels = [32, 64, 128, 256, 512, 1024]
+kernel_sizes = [4, 3, 3, 3, 3, 3]
+strides = [2, 2, 2, 2, 2, 1]
+activation = "LeakyRELU"
+freeze_prior_epochs = 5      # Freeze GMM prior params during initial training epochs
+gmm_lr_ratio = 0.5           # GMM prior LR = base_lr * ratio (canonical VaDE: separate, lower LR)
+n_total_cycles = 4           # Total beta cycles over entire training (replaces 5/epoch)
+max_beta = 0.1               # Maximum beta value (iVAE 2025: 0.01-0.1 optimal for clustering)
+beta_gamma = 0.1             # Beta cycle floor (was 0.01)
+batch_entropy_weight = 5.0   # Batch-level cluster entropy weight (was 0.1)
+cluster_tightening_weight = 0.2  # Augmented ELBO: KL(q(z|x) || p(z|c*)) tightens cluster ownership
+separation_weight = 50.0         # Continuous centroid repulsion weight
+clustering_warmup_epochs = 10    # Linearly ramp clustering losses over this many main-training epochs
+clustering_warmup_delay = 3      # Delay clustering warmup start by this many main-training epochs
+scheduler_patience = 10          # LR scheduler patience (should be < early stopping patience)
+early_stopping_metric = "composite"  # "gev", "composite" (geomean of silhouette+GEV), or "silhouette"
+polarity_weight = 0.1        # Encoder polarity invariance loss weight: MSE(mu(x), mu(-x))
+ndf = 64                     # Channel width multiplier for encoder/decoder
+n_conv_layers = 4            # Number of conv layers in encoder/decoder (2-5)
+
+[eeg]
+data_dir = "./data"
+figure_dir = "./data/Figure"
+output_path = "./data/Maps"
+batch_size = 128
+val_split = 0.10             # Fraction of data held out for evaluation (90/10 split)
+z_score_clip = 5.0           # Clip z-scored data at +/- this many std devs
+polarity_augmentation = true # Add sign-flipped copies to training set (polarity invariance)
+
+[lemon]
+subject_id = "010004"    # LEMON subject ID
+condition = "EC"         # EC (eyes closed) or EO (eyes open)
+sample_freq = 250        # LEMON native frequency (Hz)
+
+[clustering]
+# Thresholds for detecting redundant/polarity-inverted centroids
+# Centroids with SSIM >= threshold OR |correlation| >= threshold are merged
+ssim_threshold = 0.95    # Structural similarity threshold (0-1)
+corr_threshold = 0.95    # Spatial correlation threshold (0-1)

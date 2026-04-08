@@ -1,0 +1,15 @@
+# Requirements for Python 3.6 CPU-only environment (IBM server)
+# These are the last versions supporting Python 3.6.
+# No MNE, pycrostates, or matplotlib — only needed for fast-sweep training.
+#
+# NOTE: torch must be installed separately (see setup_cpu_env.sh)
+# because it needs --find-links for the CPU wheel.
+
+numpy==1.19.5
+scipy==1.5.4
+scikit-learn==0.24.2
+scikit-image==0.17.2
+tqdm>=4.0
+PyYAML>=5.0
+pandas==1.1.5
+toml>=0.10
