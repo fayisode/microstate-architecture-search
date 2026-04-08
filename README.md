@@ -190,4 +190,3 @@ Some configurations were skipped due to OOM constraints (large K with high ndf/d
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
-# microstate-architecture-search
